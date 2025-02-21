@@ -1,5 +1,5 @@
 {
-  "name": "graph-of-thought",
+  "name": "@000alen/graph-of-thought",
   "version": "1.0.0",
   "description": "",
   "type": "module",
@@ -14,8 +14,8 @@
     "lint": "tsc --noEmit"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Alen Rubilar",
+  "license": "MIT",
   "dependencies": {
     "@000alen/toposort": "^2.0.4",
     "@ai-sdk/openai": "^1.1.13",
