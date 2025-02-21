@@ -1,4 +1,4 @@
-import { type LanguageModel, generateObject, generateText } from "ai";
+import { type LanguageModel, type ToolSet, generateObject, generateText } from "ai";
 import { z } from "zod";
 import { createTemplate } from "@/template";
 import { log } from "@/logging";
@@ -28,6 +28,7 @@ export interface GraphOfThoughtOptions {
   context: string;
   task: string;
   aggregate?: boolean;
+  tools?: ToolSet;
 }
 
 export interface GraphOfThoughtResult {
@@ -73,7 +74,7 @@ function getDependencies<T>(node: T, _nodes: T[], edges: [T, T][]): T[] {
 }
 
 export async function graphOfThought(options: GraphOfThoughtOptions): Promise<GraphOfThoughtResult> {
-  const { model, context, task, aggregate = false } = options;
+  const { model, context, task, aggregate = false, tools = {} } = options;
 
   const nodesPrompt = nodeGenerationPrompt.format({
     context,
@@ -144,6 +145,8 @@ export async function graphOfThought(options: GraphOfThoughtOptions): Promise<Gr
 
         const { text } = await generateText({
           model,
+          tools,
+          maxSteps: 10,
           prompt: taskExecutionPrompt.format({
             context,
             dependencies: JSON.stringify(dependencyResults),
